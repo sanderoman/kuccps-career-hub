@@ -64,11 +64,35 @@ def create_app():
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):
-        return {'error': 'Resource not found'}, 404
+        return {
+            'error': 'Resource not found',
+            'message': 'The requested endpoint does not exist',
+            'available_endpoints': {
+                'root': '/',
+                'api': '/api',
+                'health': '/api/health',
+                'auth': '/api/auth',
+                'placement': '/api/placement',
+                'courses': '/api/courses',
+                'institutions': '/api/institutions'
+            }
+        }, 404
     
     @app.errorhandler(500)
     def internal_error(error):
-        return {'error': 'Internal server error'}, 500
+        return {
+            'error': 'Internal server error',
+            'message': 'An unexpected error occurred',
+            'service': 'KUCCPS Career Hub API'
+        }, 500
+    
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return {
+            'error': 'Method not allowed',
+            'message': 'This endpoint does not support the requested HTTP method',
+            'service': 'KUCCPS Career Hub API'
+        }, 405
     
     # Health check endpoint
     @app.route('/api/health', methods=['GET'])
@@ -112,8 +136,18 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
+    port = int(os.getenv('PORT', os.getenv('FLASK_PORT', 5000)))
+    host = os.getenv('HOST', os.getenv('FLASK_HOST', '0.0.0.0'))
+    debug = os.getenv('FLASK_ENV') == 'development'
+    
+    print(f"🚀 Starting KUCCPS Career Hub API")
+    print(f"📍 Host: {host}")
+    print(f"🔌 Port: {port}")
+    print(f"🔧 Debug: {debug}")
+    print(f"🌍 Environment: {os.getenv('FLASK_ENV', 'development')}")
+    
     app.run(
-        host=os.getenv('FLASK_HOST', '0.0.0.0'),
-        port=int(os.getenv('FLASK_PORT', 5000)),
-        debug=os.getenv('FLASK_ENV') == 'development'
+        host=host,
+        port=port,
+        debug=debug
     )
