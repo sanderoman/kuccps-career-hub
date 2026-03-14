@@ -1,0 +1,95 @@
+{
+  "programmes": [
+    {
+      "id": 1,
+      "name": "Bachelor of Science in Computer Science",
+      "institution": "University of Nairobi",
+      "level": "Degree",
+      "requirement": "B",
+      "cluster_subjects": "Mathematics, Physics, Chemistry",
+      "career_field": "Technology"
+    },
+    {
+      "id": 2,
+      "name": "Bachelor of Science in Civil Engineering",
+      "institution": "Kenyatta University",
+      "level": "Degree",
+      "requirement": "B",
+      "cluster_subjects": "Mathematics, Physics, Chemistry",
+      "career_field": "Engineering"
+    },
+    {
+      "id": 3,
+      "name": "Bachelor of Medicine and Surgery",
+      "institution": "Moi University",
+      "level": "Degree",
+      "requirement": "A-",
+      "cluster_subjects": "Biology, Chemistry, Physics",
+      "career_field": "Health"
+    },
+    {
+      "id": 4,
+      "name": "Bachelor of Science in Nursing",
+      "institution": "JKUAT",
+      "level": "Degree",
+      "requirement": "B+",
+      "cluster_subjects": "Biology, Chemistry, Physics",
+      "career_field": "Health"
+    },
+    {
+      "id": 5,
+      "name": "Bachelor of Business Administration",
+      "institution": "USIU-Africa",
+      "level": "Degree",
+      "requirement": "B-",
+      "cluster_subjects": "Mathematics, English, Economics",
+      "career_field": "Business"
+    },
+    {
+      "id": 6,
+      "name": "Bachelor of Education (Primary)",
+      "institution": "Kenyatta University",
+      "level": "Degree",
+      "requirement": "C+",
+      "cluster_subjects": "English, Mathematics, History",
+      "career_field": "Education"
+    },
+    {
+      "id": 7,
+      "name": "Diploma in Information Technology",
+      "institution": "KMTC",
+      "level": "Diploma",
+      "requirement": "C",
+      "cluster_subjects": "Mathematics, Physics, English",
+      "career_field": "Technology"
+    },
+    {
+      "id": 8,
+      "name": "Diploma in Mechanical Engineering",
+      "institution": "Technical University of Kenya",
+      "level": "Diploma",
+      "requirement": "C+",
+      "cluster_subjects": "Mathematics, Physics, Chemistry",
+      "career_field": "Engineering"
+    },
+    {
+      "id": 9,
+      "name": "Diploma in Hospitality and Hotel Management",
+      "institution": "Kenya School of Professional Cookery",
+      "level": "Diploma",
+      "requirement": "D+",
+      "cluster_subjects": "English, Mathematics, Kiswahili",
+      "career_field": "Hospitality"
+    },
+    {
+      "id": 10,
+      "name": "Certificate in Data Analysis",
+      "institution": "Online Institute",
+      "level": "Certificate",
+      "requirement": "E",
+      "cluster_subjects": "Mathematics, English",
+      "career_field": "Technology"
+    }
+  ],
+  "last_updated": "2026-03-06T08:00:00"
+}
