@@ -32,9 +32,23 @@ def create_app():
     app.config['JSON_SORT_KEYS'] = False
     app.config['ENV'] = os.getenv('FLASK_ENV', 'development')
     
+    # Production settings
+    if env == 'production':
+        app.config['DEBUG'] = False
+        app.config['TESTING'] = False
+    else:
+        app.config['DEBUG'] = True
+        app.config['TESTING'] = True
+    
+    # CORS Configuration
+    cors_origins = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
+    if cors_origins == '*':
+        CORS(app, origins="*", allow_headers=["Content-Type", "Authorization"])
+    else:
+        CORS(app, origins=cors_origins.split(','), allow_headers=["Content-Type", "Authorization"])
+    
     # Initialize extensions
     db.init_app(app)
-    CORS(app)
     
     # Register blueprints
     from routes.auth_routes import auth_bp
@@ -60,6 +74,36 @@ def create_app():
     @app.route('/api/health', methods=['GET'])
     def health():
         return {'status': 'healthy', 'service': 'KUCCPS Career Hub API'}, 200
+    
+    # Root route
+    @app.route('/', methods=['GET'])
+    def root():
+        return {
+            'message': 'KUCCPS Career Hub API',
+            'version': '1.0.0',
+            'endpoints': {
+                'health': '/api/health',
+                'auth': '/api/auth',
+                'placement': '/api/placement',
+                'courses': '/api/courses',
+                'institutions': '/api/institutions'
+            }
+        }, 200
+    
+    # API info route
+    @app.route('/api', methods=['GET'])
+    def api_info():
+        return {
+            'message': 'KUCCPS Career Hub API',
+            'version': '1.0.0',
+            'endpoints': {
+                'health': '/api/health',
+                'auth': '/api/auth',
+                'placement': '/api/placement',
+                'courses': '/api/courses',
+                'institutions': '/api/institutions'
+            }
+        }, 200
     
     with app.app_context():
         db.create_all()
