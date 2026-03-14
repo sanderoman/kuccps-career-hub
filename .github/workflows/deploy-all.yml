@@ -1,0 +1,77 @@
+name: Universal Deployment Fix
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
+        
+    - name: Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        npm install -g @railway/cli
+        railway login --token $RAILWAY_TOKEN
+        railway up --service-name kuccps-api
+        
+    - name: Deploy to Render (Fallback)
+      if: failure()
+      env:
+        RENDER_TOKEN: ${{ secrets.RENDER_TOKEN }}
+      run: |
+        echo "Railway failed, deploying to Render..."
+        # Add Render deployment commands here
+        
+    - name: Deploy to Vercel (Fallback)
+      if: failure()
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      run: |
+        echo "Deploying to Vercel..."
+        # Add Vercel deployment commands here
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm install
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Deploy to Cloudflare Pages
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        npm install -g wrangler
+        cd frontend
+        wrangler pages deploy dist --project-name kuccps-career-hub
