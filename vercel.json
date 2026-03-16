@@ -1,17 +1,8 @@
 {
   "version": 2,
   "name": "kuccps-career-hub",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/backend/app.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend"
-    }
-  ],
-  "env": {
-    "REACT_APP_API_URL": "https://kuccps-api.vercel.app/api"
-  }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.ts" },
+    { "src": "/(.*)", "dest": "/frontend/index.html" }
+  ]
 }
