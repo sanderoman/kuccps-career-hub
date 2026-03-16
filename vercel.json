@@ -1,14 +1,14 @@
 {
   "version": 2,
   "name": "kuccps-career-hub",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/backend/app.py"
+      "source": "/api/(.*)",
+      "destination": "/backend/app.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/frontend"
+      "source": "/(.*)",
+      "destination": "/frontend"
     }
   ],
   "env": {
