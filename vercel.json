@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "name": "kuccps-career-hub",
+  "builds": [
+    {
+      "src": "backend/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend"
+    }
+  ],
+  "env": {
+    "FLASK_ENV": "production",
+    "JWT_SECRET_KEY": "2025",
+    "CORS_ORIGINS": "https://kuccps-career-hub.vercel.app",
+    "PORT": "5000"
+  },
+  "functions": {
+    "backend/app.py": {
+      "runtime": "python3.9",
+      "maxDuration": 10
+    }
+  },
+  "installCommand": "cd backend && pip install -r requirements.txt",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/build",
+  "framework": "create-react-app"
+}
