@@ -1,13 +1,43 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://kuccps-api.up.railway.app/api';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // Add timeout for better error handling
 });
+
+// Add request interceptor for better debugging
+axiosInstance.interceptors.request.use(
+  (config) => {
+    console.log(`API Request: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+    return config;
+  },
+  (error) => {
+    console.error('API Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for better error handling
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.code === 'ECONNABORTED') {
+      console.error('API Timeout: Request took too long');
+    } else if (error.response) {
+      console.error(`API Error ${error.response.status}: ${error.response.data?.error || 'Unknown error'}`);
+    } else if (error.request) {
+      console.error('API Network Error: No response received');
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const placementService = {
   // Analyze student placement eligibility
