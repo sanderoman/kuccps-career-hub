@@ -3,18 +3,12 @@
   "version": "1.0.0",
   "description": "KUCCPS Career Hub - Vercel Project",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview"
   },
   "dependencies": {
     "@vercel/node": "^3.0.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "^5.0.0",
-    "vite": "^8.0.0"
   }
 }
