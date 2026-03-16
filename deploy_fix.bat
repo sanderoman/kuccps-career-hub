@@ -37,11 +37,36 @@ REM Deploy backend
 echo 🚀 Deploying backend to Railway...
 railway up --service-name kuccps-api
 
+REM Wait for deployment and get URL
+echo ⏳ Waiting for deployment to complete...
+timeout /t 30 /nobreak >nul
+
+REM Get the actual Railway URL
+echo 🔍 Getting Railway deployment URL...
+for /f "tokens=*" %%i in ('railway domains --service-name kuccps-api 2^>nul') do set RAILWAY_URL=%%i
+
+if "%RAILWAY_URL%"=="" (
+    echo ⚠️  Could not auto-detect Railway URL, using default...
+    set RAILWAY_URL=kuccps-api.up.railway.app
+)
+
+echo ✅ Backend deployed to: https://%RAILWAY_URL%
+
 REM Test backend
 echo 🧪 Testing backend deployment...
-timeout /t 5 /nobreak >nul
-curl -s https://kuccps-api.up.railway.app/
-curl -s https://kuccps-api.up.railway.app/api/health
+curl -s https://%RAILWAY_URL%/ | findstr "KUCCPS Career Hub API" >nul
+if %errorlevel% equ 0 (
+    echo ✅ Root endpoint working
+) else (
+    echo ❌ Root endpoint not responding
+)
+
+curl -s https://%RAILWAY_URL%/api/health | findstr "healthy" >nul
+if %errorlevel% equ 0 (
+    echo ✅ Health endpoint working
+) else (
+    echo ❌ Health endpoint not responding
+)
 
 echo.
 echo 🎨 Step 2: Update Frontend Configuration
@@ -50,10 +75,10 @@ echo --------------------------------------
 cd ..\frontend
 
 REM Update frontend API URL
-echo REACT_APP_API_URL=https://kuccps-api.up.railway.app/api > .env.production
+echo REACT_APP_API_URL=https://%RAILWAY_URL%/api > .env.production
 echo REACT_APP_ENV=production >> .env.production
 
-echo ✅ Frontend API URL updated to: https://kuccps-api.up.railway.app/api
+echo ✅ Frontend API URL updated to: https://%RAILWAY_URL%/api
 
 echo.
 echo 🏗️ Step 3: Build Frontend
@@ -80,12 +105,12 @@ echo ✅ DEPLOYMENT COMPLETE!
 echo ====================
 echo.
 echo 🔗 Your URLs:
-echo    Backend API: https://kuccps-api.up.railway.app
+echo    Backend API: https://%RAILWAY_URL%
 echo    Frontend:   https://kuccps-career-hub.pages.dev
 echo.
 echo 🧪 Test Commands:
-echo    curl https://kuccps-api.up.railway.app/
-echo    curl https://kuccps-api.up.railway.app/api/health
+echo    curl https://%RAILWAY_URL%/
+echo    curl https://%RAILWAY_URL%/api/health
 echo.
 echo 🌐 Visit your application: https://kuccps-career-hub.pages.dev
 echo.
